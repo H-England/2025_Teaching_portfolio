@@ -1,283 +1,291 @@
-/* Global Styles */
-body {
- font-family: 'Arial', sans-serif;
- background-color: #f4f4f4;
- color: #333;
- padding: 0;
- margin: 0;
-}
+/* ================================
+   CSS Variables & Global Styles
+=================================== */
+:root {
+    /* Color Palette */
+    --primary-color: #1D4ED8;       /* A refined blue accent */
+    --secondary-color: #2563EB;     /* A complementary blue tone */
+    --accent-color: #10B981;        /* A subtle green for buttons */
+    --background-color: #f8f9fa;     /* Light background */
+    --text-color: #333333;          /* Dark text */
+    --border-color: #e0e0e0;        /* Soft borders */
+    --box-shadow: rgba(0, 0, 0, 0.05);/* Light shadow */
+    
+    /* Component-specific */
+    --navbar-bg: #ffffff;
+    --navbar-text: #333333;
+    --btn-bg: var(--accent-color);
+    --btn-text: #ffffff;
+    --input-bg: #ffffff;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* ================================
+     Dark Mode Overrides
+  =================================== */
+  body.dark-mode {
+    --primary-color: #3B82F6;
+    --secondary-color: #60A5FA;
+    --accent-color: #22c55e;
+    --background-color: #121212;
+    --text-color: #e5e7eb;
+    --border-color: #333333;
+    --box-shadow: rgba(0, 0, 0, 0.2);
+    --navbar-bg: #1f2937;
+    --navbar-text: #e5e7eb;
+    --btn-bg: var(--accent-color);
+    --btn-text: #ffffff;
+    --input-bg: #1f2937;
+  }
+  
+  /* ================================
+     Navbar
+  =================================== */
+  .navbar {
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+  }
+  
+  .navbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .navbar .nav-item {
+    margin: 0 0.5rem;
+  }
+  
+  .navbar .nav-link {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navbar-text) !important;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+  }
+  
+  .navbar .nav-link:hover,
+  .navbar .nav-link.active {
+    color: var(--primary-color) !important;
+    border-bottom: 2px solid var(--primary-color);
+  }
+  
+  /* Dark Mode for Navbar Links */
+  body.dark-mode .navbar .nav-link {
+    color: var(--navbar-text) !important;
+  }
+  
+  /* Dark Mode Toggle Button */
+  .navbar-darkmode {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    color: #fff;
+  }
+  
+  .navbar-darkmode:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  /* ================================
+     Main Content Area
+  =================================== */
+  .shadcn-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Unified Content Box */
+  .content-box {
+    background-color: var(--background-color);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--box-shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 800px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  /* ================================
+     Headings & Text
+  =================================== */
+  .shadcn-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .shadcn-text {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* ================================
+     Buttons
+  =================================== */
+  .shadcn-button {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+  }
+  
+  .shadcn-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+  
+  /* ================================
+     Form Styles
+  =================================== */
+  .shadcn-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 2rem auto;
+  }
+  
+  .shadcn-input,
+  .shadcn-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .shadcn-input:focus,
+  .shadcn-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  
+  .shadcn-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  /* ================================
+     View Counter
+  =================================== */
+  .shadcn-counter {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    color: var(--text-color);
+  }
+  
+  /* ================================
+     Certification Section
+  =================================== */
+  .certification-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    justify-items: center;
+  }
+  
+  .certification {
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .certification:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px var(--box-shadow);
+  }
+  
+  .certification-badge {
+    width: 100px;
+    transition: transform 0.3s ease;
+  }
+  
+  .certification-badge:hover {
+    transform: scale(1.1);
+  }
+  
+  .certification-title {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
 
-/* Dark mode styles */
-body.dark-mode {
- background-color: #121212;
- color: #ffffff;
-}
-
-.navbar-darkmode {
- background-color: #007bff;
- border-radius: 50%;
- width: 40px;
- height: 40px;
- font-size: 1.8em;
- cursor: pointer;
- padding: 0;
- display: flex;
- align-items: center;
- justify-content: center;
-}
-
-/* Navbar */
-.navbar {
- background-color: #ffffff;
- padding: 20px;
- border-bottom: 1px solid #ddd;
- display: flex;
- justify-content: center;
- align-items: center;
-}
-
-/* Keep the navbar text black in dark mode */
-.navbar.dark-mode {
- background-color: #333;
-}
-
-.navbar-nav {
- flex-direction: row;
- justify-content: center;
- width: 100%;
- text-align: center;
-}
-
-.nav-item {
- display: flex;
- align-items: center;
- justify-content: center;
- flex-grow: 1;
-}
-
-.nav-link {
- font-size: 1.5em;
- font-weight: bold;
- padding: 10px;
- color: #333; /* Keep text black */
- text-decoration: none;
- transition: color 0.3s ease;
-}
-
-/* Navbar Hover Effect */
-.nav-link:hover {
- color: #007bff;
-}
-
-/* Dark Mode Navbar keeps links black */
-body.dark-mode .nav-link {
- color: #000;
-}
-
-body.dark-mode .nav-link:hover {
- color: #333;
-}
-
-/* Main Section */
-.shadcn-main {
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
- padding: 40px;
- max-width: 1200px;
- margin: 0 auto;
-}
-
-/* Standard Box Style */
-.content-box {
- background-color: #ffffff;
- padding: 20px;
- border-radius: 5px;
- border: 1px solid #ddd;
- box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
- margin-bottom: 40px;
- max-width: 800px;
- width: 100%;
- box-sizing: border-box;
- word-wrap: break-word;
- text-align: center;
-}
-
-/* Dark Mode Content Box */
-body.dark-mode .content-box {
- background-color: #333;
- color: #fff;
-}
-
-/* Certification Container Styles */
-.certification-container {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
- grid-gap: 20px;
- justify-items: center;
- padding: 20px;
-}
-
-/* Certification Item */
-.certification {
- text-align: center;
- transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.certification:hover {
- transform: scale(1.05); /* Slight zoom effect */
- box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add slight shadow on hover */
-}
-
-/* Certification Badge Styles */
-.certification-badge {
- width: 100px;
- transition: box-shadow 0.3s ease;
-}
-
-.certification-badge:hover {
- box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Shine effect on hover */
-}
-
-/* Certification Title */
-.certification-title {
- margin-top: 10px;
- font-size: 1.1em;
-}
-
-/* Profile Picture Styles */
-.profile-container {
- margin: 20px 0;
- display: flex;
- justify-content: center;
-}
-
-.profile-pic {
- border-radius: 50%;
- width: 150px;
- transition: transform 0.3s;
-}
-
-.profile-pic:hover {
- transform: scale(1.1);
-}
-
-/* Buttons */
-.shadcn-button {
- background-color: #28a745;
- color: white;
- padding: 10px 20px;
- border: none;
- border-radius: 5px;
- cursor: pointer;
- font-size: 1.1em;
- margin-bottom: 20px;
- transition: background-color 0.3s ease;
-}
-
-.shadcn-button:hover {
- background-color: #218838;
-}
-
-/* Dark Mode Button */
-body.dark-mode .shadcn-button {
- background-color: #1b5e20;
-}
-
-body.dark-mode .shadcn-button:hover {
- background-color: #156017;
-}
-
-/* Centering the buttons */
-.centered-section {
- display: flex;
- justify-content: center;
-}
-
-/* View Counter Section */
-.view-section {
- display: flex;
- flex-direction: column;
- align-items: center;
- margin-bottom: 40px;
-}
-
-.shadcn-counter {
- font-size: 1.2em;
- color: #333;
- margin-top: 10px;
-}
-
-/* Dark Mode View Counter */
-body.dark-mode .shadcn-counter {
- color: #fff;
-}
-
-/* Contact Form */
-.shadcn-form {
- display: flex;
- flex-direction: column;
- align-items: center;
- width: 100%;
- max-width: 500px;
- margin: 0 auto;
-}
-
-.shadcn-input, .shadcn-textarea {
- width: 100%;
- padding: 10px;
- margin: 10px 0;
- border: 1px solid #ddd;
- border-radius: 5px;
- box-sizing: border-box;
- text-align: center;
-}
-
-/* Dark Mode Input and Textarea */
-body.dark-mode .shadcn-input, body.dark-mode .shadcn-textarea {
- background-color: #333;
- color: #fff;
- border: 1px solid #555;
-}
-
-.shadcn-textarea {
- height: 100px;
- resize: vertical;
- text-align: center;
-}
-
-/* Footer */
-.shadcn-footer {
- background-color: #f8f9fa;
- padding: 20px;
- text-align: center;
-}
-
-.shadcn-footer p {
- margin: 0;
- color: #6c757d;
-}
-
-/* Dark Mode Footer */
-body.dark-mode .shadcn-footer {
- background-color: #222;
- color: #fff;
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
- .navbar-nav {
-     flex-direction: column;
- }
-
- .nav-link {
-     padding: 10px 0;
-     text-align: center;
-     font-size: 1.3em;
- }
-
- .navbar-darkmode {
-     margin: 10px auto;
- }
-}
+  /* ================================
+     Footer
+  =================================== */
+  .shadcn-footer {
+    background-color: var(--navbar-bg);
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+  }
+  
+  .shadcn-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+  
+  /* ================================
+     Responsive Styles
+  =================================== */
+  @media (max-width: 768px) {
+    .navbar .navbar-nav {
+      flex-direction: column;
+    }
+    
+    .nav-link {
+      padding: 0.75rem 0;
+      font-size: 1rem;
+    }
+    
+    .navbar-darkmode {
+      margin: 0.5rem auto;
+    }
+  }
+  
