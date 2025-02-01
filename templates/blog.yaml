@@ -1,4 +1,3 @@
-
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   This template is the 'blog' microservice. It will work as follows:
@@ -6,7 +5,15 @@ Description: >
   - S3 Event notifications trigger a Lambda function which transforms the uploaded text file into an HTML element.
   - Separately, an API endpoint (triggered by refreshing your page) grabs all the 'posts' from S3 and displays them on the page.
 
+Parameters:
 
+  UploadObjectsBucketName:
+    Description: The name of your bucket which you initially upload blog posts to.
+    Type: String
+
+  TransformedObjectsBucketName:
+    Description: The name of your bucket which the transformed blog will be fetched from the front end of your application.
+    Type: String
 
 Resources:
 
@@ -34,28 +41,25 @@ Resources:
                   - "s3:ListBucket"
                 Resource:
                   - !Sub "arn:aws:s3:::${UploadObjectsBucketName}"
-                  - !Sub "arn:aws:s3:::${UploadObjectsBucketName}*"
+                  - !Sub "arn:aws:s3:::${UploadObjectsBucketName}/*"
               - Sid: "WriteTransformedBucket"
                 Effect: "Allow"
                 Action:
                   - "s3:PutObject"
                 Resource:
                   - !Sub "arn:aws:s3:::${TransformedObjectsBucketName}/*"
-              - Sid: "Logging"  
+              - Sid: "Logging"
                 Effect: "Allow"
-                Action: 
+                Action:
                   - "logs:CreateLogGroup"
-                Resource: 
+                Resource:
                   - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
-              - Sid: "CreateLogStream"  
+              - Sid: "CreateLogStream"
                 Effect: "Allow"
-                Action: 
+                Action:
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
-                Resource: 
-                  - "*"   
-
-  
+                Resource: "*"
 
   FetchPostRole:
     Type: "AWS::IAM::Role"
@@ -82,21 +86,18 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:s3:::${TransformedObjectsBucketName}"
                   - !Sub "arn:aws:s3:::${TransformedObjectsBucketName}/*"
-              - Sid: "Logging"  
+              - Sid: "Logging"
                 Effect: "Allow"
-                Action: 
+                Action:
                   - "logs:CreateLogGroup"
-                Resource: 
+                Resource:
                   - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
-              - Sid: "CreateLogStream"  
+              - Sid: "CreateLogStream"
                 Effect: "Allow"
-                Action: 
+                Action:
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
-                Resource: 
-                  - "*"  
-
-                
+                Resource: "*"
 
   CreatePostFunction:
     Type: "AWS::Lambda::Function"
@@ -154,8 +155,6 @@ Resources:
       EphemeralStorage:
         Size: 512
 
-
-
   FetchPostFunction:
     Type: "AWS::Lambda::Function"
     Properties:
@@ -209,29 +208,51 @@ Resources:
         Mode: "PassThrough"
       EphemeralStorage:
         Size: 512
-      
+
+  FunctionUrl:
+    Type: "AWS::Lambda::Url"
+    Properties:
+         TargetFunctionArn: !GetAtt FetchPostFunction.Arn
+         AuthType: NONE
+         Cors:
+              AllowHeaders:
+                   - "*"
+              AllowMethods:
+                   - "*"
+              ExposeHeaders:
+                   - "*"
+              AllowOrigins:
+                   - "*"
+              
 
   TransformedObjectsBucket:
-      Type: "AWS::S3::Bucket"
-      Properties:
-        BucketName: !Ref TransformedObjectsBucketName
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref TransformedObjectsBucketName
 
   UploadObjectsBucket:
-      Type: "AWS::S3::Bucket"
-      Properties:
-        BucketName: !Ref UploadObjectsBucketName
-        NotificationConfiguration:
-          LambdaConfigurations:
-               - Function: !GetAtt CreatePostFunction.Arn
-                 Event: "s3:ObjectCreated:*"
-                 Filter:
-                      S3Key:
-                           Rules:
-                                - Value: ".txt"
-                               Name: suffix
-             
-  
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref UploadObjectsBucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Function: !GetAtt CreatePostFunction.Arn
+            Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: ".txt"
 
-
-  
-
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    DependsOn: CreatePostFunction
+    Properties:
+      FunctionName:
+        Fn::GetAtt:
+          - CreatePostFunction
+          - Arn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceArn:
+        Fn::Sub: arn:aws:s3:::${UploadObjectsBucketName}
