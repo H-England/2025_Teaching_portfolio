@@ -5,6 +5,7 @@ Parameters:
   YourTableName:
     Description: Your dynamodb table name
     Type: String
+    Default: "ViewCounterTable"
 
   
 Resources:
@@ -128,3 +129,26 @@ Resources:
                       'statusCode': 500,
                       'body': json.dumps({'Error': 'Error updating view count'}, default=decimal_default)
                   }
+
+  FunctionUrl:
+    Type: "AWS::Lambda::Url"
+    Properties:
+         TargetFunctionArn: !GetAtt ViewsFunction.Arn
+         AuthType: NONE
+         Cors:
+              AllowHeaders:
+                   - "*"
+              AllowMethods:
+                   - "*"
+              ExposeHeaders:
+                   - "*"
+              AllowOrigins:
+                   - "*"
+              
+  FunctionUrlPublicAccessPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ViewsFunction
+      Action: "lambda:InvokeFunctionUrl"
+      Principal: "*"            
+      FunctionUrlAuthType: NONE   

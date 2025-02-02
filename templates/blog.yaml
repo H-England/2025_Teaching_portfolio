@@ -256,3 +256,11 @@ Resources:
       Principal: s3.amazonaws.com
       SourceArn:
         Fn::Sub: arn:aws:s3:::${UploadObjectsBucketName}
+
+  FunctionUrlPublicAccessPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref FetchPostFunction
+      Action: "lambda:InvokeFunctionUrl"
+      Principal: "*"            
+      FunctionUrlAuthType: NONE   

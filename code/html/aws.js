@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
- fetch('INSERT_FUNCTION_URL_HERE')
+ fetch('FUNCTION_URL_HERE')
      .then(response => response.json())
      .then(data => displayNews(data))
      .catch(error => console.error('Error fetching news:', error));

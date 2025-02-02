@@ -119,3 +119,25 @@ Resources:
       EphemeralStorage:
         Size: 512
             
+  FunctionUrl:
+    Type: "AWS::Lambda::Url"
+    Properties:
+         TargetFunctionArn: !GetAtt ContactFormFunction.Arn
+         AuthType: NONE
+         Cors:
+              AllowHeaders:
+                   - "*"
+              AllowMethods:
+                   - "*"
+              ExposeHeaders:
+                   - "*"
+              AllowOrigins:
+                   - "*"
+              
+  FunctionUrlPublicAccessPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ContactFormFunction
+      Action: "lambda:InvokeFunctionUrl"
+      Principal: "*"            
+      FunctionUrlAuthType: NONE   

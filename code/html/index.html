@@ -75,12 +75,17 @@
                         <input type="email" id="email" name="Email" placeholder="Your Email" required class="shadcn-input">
                         <textarea id="message" name="Message" placeholder="Your Message" required class="shadcn-input shadcn-textarea"></textarea>
                         <div class="centered-section">
-                            <button type="submit" class="shadcn-button">Submit</button>
+                          <button type="submit" class="shadcn-button">Submit</button>
                         </div>
-
-                      <div id="submission-message" class="alert" style="display: none;"></div>
+                        <!-- Spinner element (hidden by default) -->
+                        <div id="spinner" class="text-center" style="display: none; margin-top: 1rem;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                        <div id="submission-message" class="alert" style="display: none;"></div>
+                      </form>
                       
-                    </form>
                 </div>
             </section>
         </div>

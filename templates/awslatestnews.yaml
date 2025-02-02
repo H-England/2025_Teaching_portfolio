@@ -144,7 +144,7 @@ Resources:
       EphemeralStorage:
         Size: 512
       Layers:
-        - arn:aws:lambda:us-east-1:834243533825:layer:feedparser-layer:2
+        - arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p312-feedparser:1
 
 
   LambdaInvokePermission:
@@ -260,3 +260,26 @@ Resources:
       EphemeralStorage:
         Size: 512
    
+
+  FunctionUrl:
+    Type: "AWS::Lambda::Url"
+    Properties:
+         TargetFunctionArn: !GetAtt UpdateWebpageFunction.Arn
+         AuthType: NONE
+         Cors:
+              AllowHeaders:
+                   - "*"
+              AllowMethods:
+                   - "*"
+              ExposeHeaders:
+                   - "*"
+              AllowOrigins:
+                   - "*"
+              
+  FunctionUrlPublicAccessPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref UpdateWebpageFunction
+      Action: "lambda:InvokeFunctionUrl"
+      Principal: "*"            
+      FunctionUrlAuthType: NONE   

@@ -1,4 +1,4 @@
-# SAA1 Capstone Project 1: AWS Portfolio Website
+# AWS Portfolio Website
 
 ## Overview and Objectives
 
@@ -81,7 +81,8 @@ These instructions will walk you through configuring your AWS environment to sup
 
 #### Step 1 - Deploy the AMI
 
-The first step is to take the public ami (2025-Portfolio ami-0ef1acfe3add4a816, you'll find it under community AMIs) and launch an instance from this AMI. If you SSH into your machine and go to the /var/www/html directory, you should see there are several website files waiting for you to interact with:
+The first step is to take the public ami (2025-Portfolio 	
+ami-0ad30595ed9352391, you'll find it under community AMIs) and launch an instance from this AMI. If you SSH into your machine and go to the /var/www/html directory, you should see there are several website files waiting for you to interact with:
 
 - index.html
 - index.js
@@ -149,36 +150,31 @@ The next step is to install all the CloudFormation stacks (in any order), ensuri
 ##### Blog Microservice
 
 
-1. Setup a HTTP API with a GET method integrated with the **FetchPostFunction** Lambda function. Enable CORS and as follows;
+1. Launch the `blog.yaml` microservice stack, filling in the S3 Bucket names. 
 
-- Access-Control-Allow-Origin = *
-- Access-Control-Allow-Headers = *
-- Access-Control-Allow-Methods = *
-- Access-Control-Expose-Headers = *
+2. Add the invoke URL to your application code (line 6 in the file blog.js).
 
-Add the invoke URL to your application code (line 6 in the file blog.js).
-
-2. After the initial stack creation, update the Upload Bucket to add the Event notification for triggering the **CreatePostFunction** Lambda function. This sets the S3 event notification for the Lambda function and allows the microservice to work. (**TIP:**  It should only work when .txt files are uploaded using the API call **S3:PutObject** events, triggering the **CreatePostFunction** function. 
-
-***Note*** if you are struggling to get this to work, create a function url by following steps of the subsequent steps later in the document. 
 
 ##### View Counter
 
-You must set up a Lambda function URL, with CORS enabled as a trigger for the **ViewsFunction** Lambda function.
+1. Launch the `viewcounter.yaml` stack.
 
-> Note: for each Lambda function URL in the solution you can set the authentication type to "NONE". Also, CORS should be enabled, to expose all headers, allow all headers, and allow all methods).
+2. Add the invoke URL to your application code (line 3, index.js)
 
-Take the time to explore these settings, as multiple HTTP Methods are involved. Expose all headers and allow all headers too.
-
-You will then add this to your application code (line 3 in the file **index.js**, replace the example URL). You can test the function URL works simply by clicking on it - if it does, add it in your **index.js** file. 
 
 ##### Contact Form
 
-Again, use a function URL (CORS enabled, expose all headers, allow all headers, and allow all methods). Update line 34 in the index.js file.
+1. Launch the `contactform.yaml` stack.
+
+2. Add the invoke URL to your application code (line 34, index.js)
+
 
 ##### AWS Latest News
 
-Use a function URL for the **UpdateWebpageFunction** Function (CORS enabled, expose all headers, allow all headers, and allow all methods). Update line 2 of the aws.js file.  
+1. Launch the `awslatestnews.yaml` stack.
+
+2. Add the invoke URL to your application code (line 2, aws.js)
+
 
 >  **Note:** It's worth running a manual test on the RSS Lambda function before you add the microservice to your webpage. This will populate the DynamoDB table with news stories.  Otherwise, your page will be blank until the EventBridge rule runs for the first time, which will be 9 AM UTC. 
 
@@ -194,16 +190,7 @@ At this point you should be able to test the functionality of the website. If th
 You can now follow the target architectural diagram and build a fully operational, scalable, well-architected application. This should include the Auto Scaling group, Application Load Balancer, CloudFront distribution, and Route 53 domain.
 
 
-##### Step 5 - Migrate to a serverless website
-
-Once you have fully tested the server-based deployment and validated full functionality you can proceed to migrate the website to a fully serverless solution using an S3 static website.
-
-
 ## Assistance & Getting Help
 
 You can always find assistance available for your cohort in the Slack channels.  Additionally, you can message me on Slack or jack@cumulus-consulting.cloud if you have any questions. 
 
-
-## Additional Challenge
-
-If you are looking for more of a challenge, you can build a REST API endpoint with multiple resources and methods to have a single API for all of the microservice endpoints. This does take a deeper understanding of APIs, CORS, and software architecture.  If not, don't worry; the simple HTTP API / Function URLs within the instructions will work, too. 

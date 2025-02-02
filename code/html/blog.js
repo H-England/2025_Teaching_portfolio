@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
  // Function to fetch blog posts
  function fetchBlogPosts() {
-     const apiEndpoint = 'INSERT_FUNCTION_URL_HERE'; // Replace with your actual API endpoint
+     const apiEndpoint = 'FUNCTION_URL_HERE'; // Replace with your actual API endpoint
      fetch(apiEndpoint)
          .then(response => {
              if (!response.ok) {
